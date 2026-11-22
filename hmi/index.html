@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Electro-Pneumatic Press HMI</title>
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <header>
+    <h1>Electro-Pneumatic Press</h1>
+    <p>Safety relay · Two-hand control · Pneumatic sequence</p>
+  </header>
+  <main>
+    <section class="panel">
+      <div id="state" class="state">IDLE</div>
+      <div id="fault" class="fault ok">NO FAULT</div>
+      <div class="cylinders">
+        <div><span>Clamp Y1</span><div class="bar"><i id="clampBar"></i></div><strong id="clampPos">0 mm</strong></div>
+        <div><span>Press Y2</span><div class="bar"><i id="pressBar"></i></div><strong id="pressPos">0 mm</strong></div>
+      </div>
+      <div class="grid">
+        <div><span>Cycle count</span><strong id="cycles">0</strong></div>
+        <div><span>Air pressure</span><strong id="pressure">6.5 bar</strong></div>
+        <div><span>Valves</span><strong id="valves">—</strong></div>
+        <div><span>Feedback</span><strong id="feedback">HOME</strong></div>
+      </div>
+    </section>
+    <section class="panel">
+      <h2>Two-hand station</h2>
+      <div class="buttons">
+        <button id="b1" class="hand">BUTTON 1</button>
+        <button id="b2" class="hand">BUTTON 2</button>
+      </div>
+      <p class="hint">Hold both buttons for 0.5 s. Release both before the next cycle.</p>
+      <h2>Fault injection / reset</h2>
+      <div class="row">
+        <button id="estop" class="danger">E-STOP</button>
+        <button id="guard">Guard open</button>
+        <button id="relay">Relay fault</button>
+        <button id="lowPressure">Low air</button>
+      </div>
+      <button id="reset" class="reset">RESET</button>
+      <h2>Air supply</h2>
+      <label>Pressure <input id="pressureInput" type="range" min="0" max="10" step="0.1" value="6.5" /></label>
+    </section>
+  </main>
+  <script src="/app.js"></script>
+</body>
+</html>

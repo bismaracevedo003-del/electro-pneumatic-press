@@ -1,0 +1,109 @@
+FUNCTION_BLOCK "FB_PressControl"
+{ S7_Optimized_Access := 'TRUE' }
+VERSION : 0.1
+VAR_INPUT
+    Button1 : Bool;
+    Button2 : Bool;
+    SafetyOK : Bool;
+    GuardClosed : Bool;
+    EStopOK : Bool;
+    PressureOK : Bool;
+    ClampAtPosition : Bool;
+    PressAtPosition : Bool;
+    PressHome : Bool;
+    Reset : Bool;
+END_VAR
+VAR_OUTPUT
+    ClampValve : Bool;
+    PressValve : Bool;
+    RetractValve : Bool;
+    State : Int;
+    FaultCode : Int;
+    CycleCount : DInt;
+END_VAR
+VAR
+    ButtonTimer : TON_TIME;
+    HoldTimer : TON_TIME;
+    StrokeTimer : TON_TIME;
+    BothButtons : Bool;
+    AntiTieDown : Bool;
+END_VAR
+BEGIN
+    IF NOT #EStopOK THEN
+        #FaultCode := 1;
+    ELSIF NOT #GuardClosed THEN
+        #FaultCode := 2;
+    ELSIF NOT #SafetyOK THEN
+        #FaultCode := 3;
+    ELSIF NOT #PressureOK THEN
+        #FaultCode := 4;
+    END_IF;
+
+    IF #Reset AND #EStopOK AND #GuardClosed AND #SafetyOK AND #PressureOK THEN
+        #FaultCode := 0;
+        #State := 0;
+    END_IF;
+
+    IF #FaultCode <> 0 THEN
+        #ClampValve := FALSE;
+        #PressValve := FALSE;
+        #RetractValve := FALSE;
+        #State := 99;
+        RETURN;
+    END_IF;
+
+    #ButtonTimer(IN := (#Button1 AND #Button2), PT := T#500ms);
+    IF #ButtonTimer.Q AND NOT #AntiTieDown THEN
+        #BothButtons := TRUE;
+    END_IF;
+    IF NOT #Button1 AND NOT #Button2 THEN
+        #AntiTieDown := FALSE;
+        #BothButtons := FALSE;
+    END_IF;
+
+    CASE #State OF
+        0:
+            IF #BothButtons AND #PressHome THEN
+                #State := 1;
+                #AntiTieDown := TRUE;
+            END_IF;
+        1:
+            #State := 2;
+        2:
+            #ClampValve := TRUE;
+            IF #ClampAtPosition THEN
+                #State := 3;
+            END_IF;
+        3:
+            #PressValve := TRUE;
+            IF #PressAtPosition THEN
+                #State := 4;
+            END_IF;
+        4:
+            #HoldTimer(IN := TRUE, PT := T#1500ms);
+            IF #HoldTimer.Q THEN
+                #State := 5;
+                #HoldTimer(IN := FALSE);
+            END_IF;
+        5:
+            #ClampValve := FALSE;
+            #PressValve := FALSE;
+            #RetractValve := TRUE;
+            IF #PressHome THEN
+                #State := 6;
+            END_IF;
+        6:
+            #RetractValve := FALSE;
+            #CycleCount := #CycleCount + 1;
+            #State := 0;
+            #BothButtons := FALSE;
+        99:
+            ;
+    END_CASE;
+
+    #StrokeTimer(IN := (#State = 2 OR #State = 3 OR #State = 5), PT := T#5s);
+    IF #StrokeTimer.Q THEN
+        #FaultCode := 5;
+        #State := 99;
+    END_IF;
+END_FUNCTION_BLOCK

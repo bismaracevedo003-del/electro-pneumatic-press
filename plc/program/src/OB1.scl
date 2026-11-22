@@ -1,0 +1,18 @@
+"Press_Control_DB"(
+    Button1 := "I0.0",
+    Button2 := "I0.1",
+    SafetyOK := "I0.2",
+    GuardClosed := "I0.3",
+    EStopOK := "I0.4",
+    PressureOK := "I0.5",
+    ClampAtPosition := "I0.6",
+    PressAtPosition := "I0.7",
+    PressHome := "I1.0",
+    Reset := "M0.0",
+    ClampValve => "Q0.0",
+    PressValve => "Q0.1",
+    RetractValve => "Q0.2",
+    State => "MW10",
+    FaultCode => "MW12",
+    CycleCount => "MD14"
+);

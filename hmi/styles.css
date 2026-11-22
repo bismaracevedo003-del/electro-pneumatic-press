@@ -1,0 +1,32 @@
+:root { font-family: "Segoe UI", sans-serif; background: #0b1220; color: #e6edf7; }
+body { margin: 0; padding: 24px; }
+header h1 { margin: 0; font-size: 26px; color: #4cc9f0; }
+header p { margin: 4px 0 18px; color: #91a7c4; }
+main { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+.panel { background: #111c2e; border: 1px solid #243650; border-radius: 10px; padding: 18px; }
+.state { font-size: 34px; font-weight: 700; color: #ffd166; letter-spacing: 2px; }
+.state-99 { color: #ef476f; }
+.state-2, .state-3, .state-4, .state-5 { color: #4cc9f0; }
+.fault { display: inline-block; padding: 5px 10px; border-radius: 5px; margin: 8px 0 16px; font-size: 12px; }
+.fault.ok { background: #0e2a22; color: #06d6a0; }
+.fault.alarm { background: #3a1020; color: #ef476f; }
+.cylinders div { margin: 14px 0; }
+.cylinders span { font-size: 12px; color: #91a7c4; }
+.bar { height: 14px; background: #0b1220; border-radius: 7px; overflow: hidden; margin: 5px 0; }
+.bar i { display: block; height: 100%; background: #4cc9f0; }
+.grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 16px; }
+.grid div { background: #0b1220; padding: 10px; border-radius: 6px; }
+.grid span { display: block; font-size: 12px; color: #91a7c4; }
+.grid strong { font-size: 20px; }
+.buttons { display: flex; gap: 14px; }
+.hand { flex: 1; padding: 28px; font-size: 18px; font-weight: 700; background: #243650; color: #e6edf7; border: 2px solid #3d5a80; border-radius: 10px; user-select: none; }
+.hand.active { background: #06d6a0; color: #04231b; border-color: #06d6a0; }
+.hint { color: #91a7c4; font-size: 12px; }
+.row { display: flex; flex-wrap: wrap; gap: 6px; }
+button { background: #243650; color: #e6edf7; border: 1px solid #3d5a80; padding: 8px 12px; border-radius: 6px; cursor: pointer; }
+.danger { background: #ef476f; color: #fff; border-color: #ef476f; }
+.reset { background: #4cc9f0; color: #06121f; font-weight: 700; margin-top: 12px; }
+h2 { font-size: 16px; margin-top: 22px; }
+label { display: block; margin-top: 12px; font-size: 13px; }
+input[type="range"] { width: 100%; }
+@media (max-width: 900px) { main { grid-template-columns: 1fr; } }
