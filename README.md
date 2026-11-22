@@ -97,6 +97,10 @@ Verified: **20 Python tests OK**; HMI smoke `Page=200`, two-hand arming, guard f
 - [x] Screenshots and docs
 - [x] Repository on `main`
 
+## 11. Optional real-mode adapter
+
+`MODE=simulation` stays the default and the existing server/tests are unchanged. An optional S7 **read-only monitoring** adapter (`simulation/real_adapter.py`) is enabled with `MODE=real` and the `S7_*` variables. It cannot start cycles, reset faults or write valves; `ALLOW_WRITES=true` is rejected for safety. Missing config/dependencies raise an error instead of falling back. See [docs/real-integration.md](docs/real-integration.md) and [config/real.env.example](config/real.env.example).
+
 ---
 
 **Author:** Bismarck Acevedo — Electronic Engineer, Industrial Automation & PLC Programming.
